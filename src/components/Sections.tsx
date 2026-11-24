@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { cases, lab, contact, roles } from "@/content/career";
-import { getAllPosts, formatDate } from "@/lib/posts";
+import { getAllPosts } from "@/lib/posts";
+import { CaseAccordion } from "@/components/CaseAccordion";
+import { ArrowCircle, PostRow } from "@/components/ui/Affordances";
 
 const wrap = "mx-auto w-full max-w-6xl px-5 sm:px-8";
 const h2 = "font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]";
@@ -47,38 +49,7 @@ export function Cases() {
       <p className="mt-4 max-w-[55ch] text-paper/70">
         Quatro trabalhos contados pelo problema, não pela tecnologia.
       </p>
-      <div className="mt-14 border-t border-line">
-        {cases.map((c) => (
-          <details key={c.id} className="group border-b border-line">
-            <summary className="flex cursor-pointer list-none items-baseline justify-between gap-6 py-7 [&::-webkit-details-marker]:hidden">
-              <span>
-                <span className="block font-display text-[clamp(1.4rem,3vw,2.1rem)] font-semibold leading-tight transition-colors group-hover:text-tide">
-                  {c.title}
-                </span>
-                <span className="mt-1 block text-sm text-fog">{c.context}</span>
-              </span>
-              <span
-                aria-hidden="true"
-                className="shrink-0 text-2xl text-fog transition-transform duration-300 group-open:rotate-45"
-              >
-                +
-              </span>
-            </summary>
-            <div className="grid gap-6 pb-10 md:grid-cols-3 md:gap-10">
-              {[
-                ["Problema", c.problem],
-                ["Decisão", c.decision],
-                ["Resultado", c.outcome],
-              ].map(([label, text]) => (
-                <div key={label}>
-                  <h3 className="text-sm text-amber">{label}</h3>
-                  <p className="mt-2 text-[0.97rem] text-paper/80">{text}</p>
-                </div>
-              ))}
-            </div>
-          </details>
-        ))}
-      </div>
+      <CaseAccordion items={cases} />
     </section>
   );
 }
@@ -89,18 +60,37 @@ export function Lab() {
       <h2 className={h2}>Lab</h2>
       <p className="mt-4 max-w-[55ch] text-paper/70">Ferramentas pequenas que eu construo para trabalhar melhor.</p>
       <ul className={`mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line ${lab.length > 1 ? "md:grid-cols-2" : "max-w-xl"}`}>
-        {lab.map((item) => (
-          <li key={item.title} className="bg-ink p-7">
-            <h3 className="font-display text-xl font-semibold">{item.title}</h3>
-            <p className="mt-3 max-w-[48ch] text-paper/75">{item.description}</p>
-            <p className="mt-5 text-sm text-fog">{item.stack.join(", ")}</p>
-            {item.href && (
-              <a href={item.href} className="mt-4 inline-block text-sm text-tide hover:text-paper">
-                Ver o código
-              </a>
-            )}
-          </li>
-        ))}
+        {lab.map((item) => {
+          const body = (
+            <>
+              <h3 className="font-display text-xl font-semibold transition-colors duration-300 group-hover:text-tide">
+                {item.title}
+              </h3>
+              <p className="mt-3 max-w-[48ch] text-paper/75">{item.description}</p>
+              <p className="mt-5 text-sm text-fog">{item.stack.join(", ")}</p>
+            </>
+          );
+          return (
+            <li key={item.title} className="bg-ink">
+              {item.href ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener"
+                  className="group flex h-full flex-col p-7 transition-colors duration-300 hover:bg-hull/70"
+                >
+                  {body}
+                  <span className="mt-6 flex items-center gap-3 text-sm text-tide">
+                    <ArrowCircle external />
+                    Ver o código no GitHub
+                  </span>
+                </a>
+              ) : (
+                <div className="p-7">{body}</div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
@@ -112,8 +102,9 @@ export function Writing() {
     <section id="escritos" className={`${wrap} py-28`}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h2 className={h2}>Escritos</h2>
-        <Link href="/blog" className="text-sm text-tide hover:text-paper">
+        <Link href="/blog" className="group flex items-center gap-3 text-sm text-tide">
           Ver todos os escritos
+          <ArrowCircle />
         </Link>
       </div>
       {posts.length === 0 ? (
@@ -121,20 +112,7 @@ export function Writing() {
       ) : (
         <ul className="mt-12 border-t border-line">
           {posts.map((p) => (
-            <li key={p.slug} className="border-b border-line">
-              <Link href={`/blog/${p.slug}`} className="group grid gap-2 py-7 md:grid-cols-[12rem_1fr] md:gap-10">
-                <span className="text-sm text-fog">
-                  {formatDate(p.date)}
-                  {p.draft && <span className="ml-2 text-amber">rascunho</span>}
-                </span>
-                <span>
-                  <span className="block font-display text-2xl font-semibold leading-snug transition-colors group-hover:text-tide">
-                    {p.title}
-                  </span>
-                  <span className="mt-2 block max-w-[60ch] text-paper/70">{p.description}</span>
-                </span>
-              </Link>
-            </li>
+            <PostRow key={p.slug} post={p} />
           ))}
         </ul>
       )}
