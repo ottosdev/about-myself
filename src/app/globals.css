@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
+/* Paleta "Abissal": azul de fundo de oceano, âmbar de terminal antigo (legado)
+   e verdete (o código modernizado). O âmbar vira verdete ao longo da trajetória. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #08111f;
+  --hull: #0f1c30;
+  --line: #1f3049;
+  --paper: #e9e4d8;
+  --fog: #8d99ab;
+  --amber: #f2a93b;
+  --tide: #4fd1c5;
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-hull: var(--hull);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-fog: var(--fog);
+  --color-amber: var(--amber);
+  --color-tide: var(--tide);
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-plex);
+  --font-mono: var(--font-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-plex), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--tide);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.prose-otto {
+  max-width: 68ch;
+}
+.prose-otto h2 {
+  font-family: var(--font-bricolage);
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin: 2.5rem 0 1rem;
+  font-weight: 600;
+}
+.prose-otto h3 {
+  font-family: var(--font-bricolage);
+  font-size: 1.3rem;
+  margin: 2rem 0 0.75rem;
+  font-weight: 600;
+}
+.prose-otto p,
+.prose-otto ul,
+.prose-otto ol {
+  margin: 0 0 1.25rem;
+  color: color-mix(in srgb, var(--paper) 88%, var(--fog));
+}
+.prose-otto ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-otto ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.prose-otto li {
+  margin-bottom: 0.4rem;
+}
+.prose-otto a {
+  color: var(--tide);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-otto code {
+  font-family: var(--font-plex-mono);
+  font-size: 0.9em;
+  background: var(--hull);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.prose-otto pre {
+  background: var(--hull);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 0 0 1.5rem;
+}
+.prose-otto pre code {
+  background: none;
+  padding: 0;
+}
+.prose-otto blockquote {
+  border-left: 2px solid var(--amber);
+  padding-left: 1rem;
+  color: var(--fog);
+  margin: 0 0 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Currículo */
+.resume .resume-h2 {
+  font-family: var(--font-bricolage);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0b1626;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid #e3e7ee;
+}
+
+@page {
+  size: A4;
+  margin: 13mm 14mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .resume {
+    font-size: 15px;
+  }
 }

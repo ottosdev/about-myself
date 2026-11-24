@@ -1,0 +1,42 @@
+---
+title: "Como uso agentes de IA para entender um sistema de 30 anos"
+description: "Orquestrador, analista, arquiteto, dev, QA e revisor: o fluxo que montei para modernizar um legado sem confiar cegamente na IA."
+date: "2026-11-24"
+draft: true
+---
+
+> Rascunho escrito a partir da nossa conversa. Revise, corrija e complete antes de publicar.
+
+Hoje trabalho na modernização de um sistema que tem, em média, 30 anos. A documentação existe, mas é antiga, e em vários pontos já não descreve o que o código faz. Pedir para a IA "reescrever isso em Angular" não funciona. O que funciona é colocar a IA dentro de um processo.
+
+## O problema de pedir código direto
+
+Quando você joga um sistema grande numa IA e pede código, ela inventa o que não entendeu. Em legado, o que ela não entendeu costuma ser justamente a regra de negócio que mais importa.
+
+## Primeiro passo: documentação em Markdown
+
+Antes de qualquer agente, converto a documentação em PDF para Markdown com um script em Python. Texto limpo tem menos ruído, e a IA gasta menos tokens para ler o que interessa.
+
+## Um time de agentes, não um agente
+
+No GitHub Copilot, montei um fluxo baseado em SDD (desenvolvimento guiado por especificação) e no ciclo de vida do software:
+
+1. **Orquestrador:** recebe a tarefa e delega.
+2. **Analista:** entende a regra de negócio.
+3. **Arquiteto:** desenha a solução.
+4. **Desenvolvedor:** implementa.
+5. **QA:** testa.
+6. **Revisor:** confere se tudo foi implementado.
+
+## Quatro arquivos no fim de cada ciclo
+
+- **Pendências:** o que falta no front, no back e na documentação.
+- **Plano:** o que a IA vai executar.
+- **Especificação:** o que deve ser verdade quando terminar.
+- **Validador:** confere se o que foi feito segue a regra.
+
+As pendências existem porque parte da documentação vai estar errada. O fluxo não esconde isso: ele aponta.
+
+## O que continua sendo meu
+
+A IA propõe. Quem confere contra o sistema real e responde pelo que vai para produção sou eu.
